@@ -1,76 +1,71 @@
 export class LinkedList{
-    #canciones = ['Netflix & Chill', 'Adventure', 'New Beginning','Beat It','Billie Jean','Im bad','Smooth Criminal','Thriller'];
-    #posicion=0;
-    #Reproduciendo = false;
-    #titulo = document.getElementById("titulo");
-    #image = document.getElementById("image");
-    #audio = document.getElementById("audio")
-    #progreso = document.getElementById("progreso");
+    posicion=0;
+    Reproduciendo = false;
 
-reproducirAudio(){
-    if(this.#Reproduciendo){
-        this.pausarCancion();
+reproducirAudio(audio){
+    if(this.Reproduciendo){
+        this.pausarCancion(audio);
         btnReproducir.textContent = "Play";
     }else{
         this.reproducirCancion(audio);
         btnReproducir.textContent = "Pause"
     }
-    this.#Reproduciendo = !this.#Reproduciendo;
-    console.log(this.#posicion)
+    this.Reproduciendo = !this.Reproduciendo;
+    console.log(this.posicion)
 }
 
-volverInicio(){
-    if(this.#canciones.length==this.#posicion+1){
-        this.#posicion=-1;
+volverInicio(canciones){
+    if(canciones.length==this.posicion+1){
+        this.posicion=-1;
     }
 }
 
-volverFinal(){
-    if(this.#posicion==0){
-        this.#posicion=3;
+volverFinal(canciones){
+    if(this.posicion==0){
+        this.posicion=canciones.length;
     }
 }
 
-actualizarTiempo(){
-    let valor = this.#audio.currentTime / audio.duration;
-    this.#progreso.value = valor;
+actualizarTiempo(audio,progreso){
+    let valor = audio.currentTime / audio.duration;
+    progreso.value = valor;
 }
 
-cargarCancion(){
-    this.#titulo.innerText = this.#canciones[this.#posicion];
-    this.#audio.src = `./src/music/${this.#canciones[this.#posicion]}.mp3`
+cargarCancion(titulo,audio,canciones){
+    titulo.innerText = canciones[this.posicion];
+    audio.src = `./src/music/${canciones[this.posicion]}.mp3`
 }
 
-cargarImagen(){
-    this.#image.src =`./src/images/${this.#canciones[this.#posicion]}.jpg`
+cargarImagen(image,canciones){
+    image.src =`./src/images/${canciones[this.posicion]}.jpg`
 }
 
 
-reproducirCancion(){
-    this.#audio.play();
+reproducirCancion(audio){
+    audio.play();
 }
 
-pausarCancion(){
-    this.#audio.pause();
+pausarCancion(audio){
+    audio.pause();
 }
 
-cancionAnterior(){
-    this.volverFinal();
-    this.#posicion--;
+cancionAnterior(canciones,audio,image,titulo){
+    this.volverFinal(canciones);
+    this.posicion--;
     btnReproducir.textContent = "Pause";
-    this.#Reproduciendo=true;
-    this.cargarCancion(this.#canciones[this.#posicion])
-    this.cargarImagen();
-    this.reproducirCancion(this.#audio);
+    this.Reproduciendo=true;
+    this.cargarCancion(titulo,audio,canciones/*canciones[this.posicion]*/)
+    this.cargarImagen(image,canciones);
+    this.reproducirCancion(audio);
 }
 
-cancionSiguiente(){
-    this.volverInicio();
-    this.#posicion++;
+cancionSiguiente(canciones,audio,image,titulo){
+    this.volverInicio(canciones);
+    this.posicion++;
     btnReproducir.textContent = "Pause";
-    this.#Reproduciendo=true;
-    this.cargarCancion(this.#canciones[this.#posicion]);
-    this.cargarImagen();
-    this.reproducirCancion(this.#audio);
+    this.Reproduciendo=true;
+    this.cargarCancion(titulo,audio,canciones/*canciones[this.posicion]*/);
+    this.cargarImagen(image,canciones);
+    this.reproducirCancion(audio);
     }
 }
